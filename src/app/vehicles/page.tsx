@@ -1,12 +1,15 @@
 import Header from '@/components/Header'
+import VehiclesBanner from '@/components/VehiclesBanner'
 import Footer from '@/components/Footer'
 
-export default function Home() {
+const Page = () => {
   return (
     <>
       <Header />
-      Welcome to the home page
+      <VehiclesBanner />
       <Footer />
     </>
   )
 }
+
+export default Page
