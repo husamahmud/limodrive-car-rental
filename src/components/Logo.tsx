@@ -1,9 +1,13 @@
 import Image from 'next/image'
 
-export default function Logo() {
+interface LogoProps {
+  color?: 'light' | 'dark'
+}
+
+export default function Logo({ color = 'dark' }: LogoProps) {
   return (
     <Image
-      src="/dark_logo.png"
+      src={color === 'light' ? '/light_logo.png' : '/dark_logo.png'}
       width={80}
       height={80}
       alt="logo"
