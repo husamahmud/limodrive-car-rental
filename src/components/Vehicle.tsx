@@ -2,19 +2,20 @@
 
 import React from 'react'
 import Image from 'next/image'
-import { FiTool } from 'react-icons/fi'
-import { PiSeatbeltLight, PiSeatLight } from 'react-icons/pi'
-import { BiCategoryAlt } from 'react-icons/bi'
-import { FaCarSide } from 'react-icons/fa'
-import { IoCarSportOutline } from 'react-icons/io5'
 import { useQuery } from '@tanstack/react-query'
+import { FiTool } from 'react-icons/fi'
+import { FaCarSide } from 'react-icons/fa'
+import { BiCategoryAlt } from 'react-icons/bi'
+import { PiSeatbeltLight, PiSeatLight } from 'react-icons/pi'
+import { HiArrowUpRight } from 'react-icons/hi2'
+import { IoCarSportOutline } from 'react-icons/io5'
 
 import { getCarAPI } from '@/lib/data-service'
+import { Card, CardHeader } from '@/components/ui/card'
+
 import Stars from '@/components/Stars'
-import {
-  Card,
-  CardHeader,
-} from '@/components/ui/card'
+import Spinner from '@/components/Spinner'
+import { Modal } from '@/components/Modal'
 
 const CAR_INFO = [
   {
@@ -49,13 +50,22 @@ const CAR_INFO = [
   },
 ]
 
+interface carInfoType {
+  transmission: string
+  interior: string
+  type: string
+  seat: string
+  category: string
+  make: string
+}
+
 export default function Vehicle({ carId }: { carId: string }) {
   const { data, isPending, error } = useQuery({
     queryKey: ['car', carId],
     queryFn: () => getCarAPI(carId),
   })
 
-  if (isPending) return <div>Loading...</div>
+  if (isPending) return <Spinner />
 
   if (error) return <div>Error: {error.message}</div>
 
@@ -64,22 +74,24 @@ export default function Vehicle({ carId }: { carId: string }) {
   return (
     <div className="py-20 container">
       <div className="flex gap-8 px-10">
-        <div className="flex-1 flex justify-center items-center">
+        <div className="flex-1 flex flex-col justify-evenly items-center">
           <Image
             width={500}
-            height={500}
+            height={285}
             src={car.image}
             alt={car.name}
             priority={true}
           />
+
+          <p className="text-lg tracking-wide">
+            {car.description}
+          </p>
         </div>
 
         <div className="flex-1 space-y-5">
-          <h1 className="text-5xl font-serif font-medium">{car.name}</h1>
-          <Stars
-            number={car.stars}
-            className="flex"
-          />
+          <h1 className="text-4xl font-serif font-medium">{car.name}</h1>
+          <Stars number={car.stars}
+                 className="flex" />
 
           <div className="grid grid-cols-2 gap-3">
             {CAR_INFO.map((info) => (
@@ -90,7 +102,7 @@ export default function Vehicle({ carId }: { carId: string }) {
                 <CardHeader className="flex flex-row justify-between p-4 items-center">
                   <p className="flex flex-col">
                     <span className="font-semibold text-base">
-                      {car[info.type]}
+                      {car[info.type as keyof carInfoType]}
                     </span>
                     {info.label}
                   </p>
@@ -105,6 +117,22 @@ export default function Vehicle({ carId }: { carId: string }) {
               </Card>
             ))}
           </div>
+
+          <div className="flex justify-evenly">
+            <p className="flex justify-center text-lg items-center gap-1">
+              <span className="text-4xl font-semibold">${car.price}</span> / per
+              hour
+            </p>
+            <p className="flex justify-center text-lg items-center gap-1">
+              <span className="text-4xl font-semibold">${car.price * 20}</span> /
+              per
+              day
+            </p>
+          </div>
+
+          <Modal carName={car.name}>
+            Book now <HiArrowUpRight />
+          </Modal>
         </div>
       </div>
     </div>
