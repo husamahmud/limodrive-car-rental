@@ -15,7 +15,7 @@ import { Card, CardHeader } from '@/components/ui/card'
 
 import Stars from '@/components/Stars'
 import Spinner from '@/components/Spinner'
-import { Modal } from '@/components/Modal'
+import { CarBookingModal } from '@/components/CarBookingModal'
 
 const CAR_INFO = [
   {
@@ -130,9 +130,9 @@ export default function Vehicle({ carId }: { carId: string }) {
             </p>
           </div>
 
-          <Modal carName={car.name}>
+          <CarBookingModal carName={car.name}>
             Book now <HiArrowUpRight />
-          </Modal>
+          </CarBookingModal>
         </div>
       </div>
     </div>

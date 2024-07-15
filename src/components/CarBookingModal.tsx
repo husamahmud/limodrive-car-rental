@@ -15,7 +15,7 @@ interface ModalProps {
   carName: string
 }
 
-export function Modal({ children, carName }: ModalProps) {
+export function CarBookingModal({ children, carName }: ModalProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
