@@ -1,13 +1,16 @@
-type Params = {
-  params: {
-    id: string
-  }
-}
-const Page = ({ params }: Params) => {
-  console.log(params)
+import Header from '@/components/Header'
+import Vehicle from '@/components/Vehicle'
+import Footer from '@/components/Footer'
+
+const Page = ({ params }: { params: any }) => {
+  console.log(params.id)
 
   return (
-    <h1>Car id</h1>
+    <>
+      <Header />
+      <Vehicle carId={params.id} />
+      <Footer />
+    </>
   )
 }
 

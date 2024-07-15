@@ -5,6 +5,7 @@ import { Inter as FontSans } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/toaster'
+import Providers from '@/app/providers'
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -22,8 +23,10 @@ export default function RootLayout({ children }: Readonly<{
   return (
     <html lang="en">
     <body className={cn('min-h-screen font-sans antialiased', fontSans.variable)}>
-    {children}
-    <Toaster />
+    <Providers>
+      {children}
+      <Toaster />
+    </Providers>
     </body>
     </html>
   )

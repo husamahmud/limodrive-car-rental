@@ -14,6 +14,21 @@ export async function getCarsAPI() {
   return { data }
 }
 
+export async function getCarAPI(id: string) {
+  const { data, error } = await supabase
+    .from('cars')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    console.error('getCarAPI', error)
+    throw error
+  }
+
+  return { data }
+}
+
 export async function addCarAPI(car: CarI) {
   const { data, error } = await supabase
     .from('cars')
