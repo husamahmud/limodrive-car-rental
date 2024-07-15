@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { HiMiniStar, HiArrowUpRight } from 'react-icons/hi2'
+import { HiArrowUpRight } from 'react-icons/hi2'
 
 import {
   Card,
@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { CarI } from '@/types/car.interface'
+import Stars from '@/components/Stars'
 
 export default function CarItem(car: CarI) {
   return (
@@ -21,15 +22,7 @@ export default function CarItem(car: CarI) {
           {car.name}
         </CardTitle>
 
-        <div className="flex justify-center">
-          {Array.from({ length: car.stars }).map((_, index) => (
-            <HiMiniStar
-              size={20}
-              key={index}
-              className="text-brand"
-            />
-          ))}
-        </div>
+        <Stars number={car.stars} />
       </CardHeader>
 
       <CardContent className="space-y-6 text-center flex flex-col justify-between flex-1">

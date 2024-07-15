@@ -14,7 +14,7 @@ export async function getCarsAPI() {
   return { data }
 }
 
-export async function getCarAPI(id: string) {
+export async function getCarAPI(id: string): Promise<{ data: CarI }> {
   const { data, error } = await supabase
     .from('cars')
     .select('*')
@@ -26,7 +26,9 @@ export async function getCarAPI(id: string) {
     throw error
   }
 
-  return { data }
+  const car = data as CarI
+
+  return { data: car }
 }
 
 export async function addCarAPI(car: CarI) {
