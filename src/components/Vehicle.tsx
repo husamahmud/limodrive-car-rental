@@ -9,13 +9,13 @@ import { BiCategoryAlt } from 'react-icons/bi'
 import { PiSeatbeltLight, PiSeatLight } from 'react-icons/pi'
 import { HiArrowUpRight } from 'react-icons/hi2'
 import { IoCarSportOutline } from 'react-icons/io5'
-
 import { getCarAPI } from '@/lib/data-service'
 import { Card, CardHeader } from '@/components/ui/card'
-
+import { Button } from '@/components/ui/button'
 import Stars from '@/components/Stars'
 import Spinner from '@/components/Spinner'
-import { CarBookingModal } from '@/components/CarBookingModal'
+import { Modal } from '@/components/Modal'
+import ModalForm from '@/components/ModalForm'
 
 const CAR_INFO = [
   {
@@ -130,9 +130,16 @@ export default function Vehicle({ carId }: { carId: string }) {
             </p>
           </div>
 
-          <CarBookingModal carName={car.name}>
-            Book now <HiArrowUpRight />
-          </CarBookingModal>
+          <Modal
+            title={`Book ${car.name}`}
+            modalOpen={
+              <Button className='w-full py-8 flex items-center gap-4 text-lg border border-brand shadow hover:text-white transition-all text-brand-dark font-semibold hover:bg-brand bg-transparent'>
+              Book now <HiArrowUpRight />
+              </Button>
+            }
+          >
+            <ModalForm />
+          </Modal>
         </div>
       </div>
     </div>

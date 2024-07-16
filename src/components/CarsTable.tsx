@@ -1,6 +1,6 @@
 'use client'
 
-import * as React from 'react'
+import { useState } from 'react'
 import {
   ColumnDef,
   VisibilityState,
@@ -11,7 +11,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { MoreHorizontal } from 'lucide-react'
-
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -29,29 +28,13 @@ import {
 } from '@/components/ui/table'
 
 import { CARS } from '@/data/cars'
+import { CarI } from '@/types/car.interface'
+import { Modal } from '@/components/Modal'
+import EditCarForm from '@/components/EditCarForm'
 
-const data: CarsI[] = CARS
+const data: CarI[] = CARS
 
-export type CarsI = {
-  id: number
-  name: string
-  model: string
-  price: number
-  availability: boolean
-  description: string
-  image: string
-  seats: number
-  transmission: string
-  color: string
-  seat: string
-  interior: string
-  category: string
-  type: string
-  make: string
-  stars: number
-}
-
-export const columns: ColumnDef<CarsI>[] = [
+export const columns: ColumnDef<CarI>[] = [
   {
     accessorKey: 'name',
     header: 'Name',
@@ -99,6 +82,10 @@ export const columns: ColumnDef<CarsI>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
+      const handleDelete = (id: number) => {
+        console.log('Delete car with id:', id)
+      }
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -111,15 +98,27 @@ export const columns: ColumnDef<CarsI>[] = [
 
           <DropdownMenuContent align="end">
             <DropdownMenuItem
-              onClick={() => console.log('Edit car', row.original.id)}
+              className="p-0"
+              onSelect={(e) => e.preventDefault()}
             >
-              Edit Car
+              <Modal modalOpen={
+                <Button className="w-full flex justify-start"
+                        variant="ghost">
+                  Edit
+                </Button>
+              }
+                     title={`Edit ${row.original.name}`}>
+                <EditCarForm car={row.original} />
+              </Modal>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => {// todo
-              }}
-            >
-              Delete Car
+            <DropdownMenuItem className="p-0">
+              <Button
+                className="w-full flex justify-start"
+                variant="ghost"
+                onClick={() => handleDelete(row.original.id)}
+              >
+                Delete
+              </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -129,9 +128,8 @@ export const columns: ColumnDef<CarsI>[] = [
 ]
 
 export default function CarsTable() {
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({
     data,

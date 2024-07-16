@@ -84,12 +84,3 @@ export default function Vehicles() {
     </div>
   )
 }
-
-const MessageDisplay = ({ message, className = 'text-gray-700' }: {
-  message: string;
-  className?: string;
-}) => (
-  <div className="col-span-full text-center">
-    <p className={className}>{message}</p>
-  </div>
-)
