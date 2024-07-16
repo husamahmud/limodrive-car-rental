@@ -31,17 +31,18 @@ export async function getCarAPI(id: string): Promise<{ data: CarI }> {
   return { data: car }
 }
 
-export async function createCar(car: CarI) {
+export async function createCar(car: Partial<CarI>) {
   const { data, error } = await supabase
     .from('cars')
     .insert(car)
+    .select()
 
   if (error) {
     console.error(error)
     throw error
   }
 
-  return { data }
+  return data[0]
 }
 
 export async function updateCarAPI(car: Partial<CarI>) {
@@ -50,8 +51,6 @@ export async function updateCarAPI(car: Partial<CarI>) {
     .update(car)
     .eq('id', car.id)
     .select()
-
-  console.log('updateCarAPI', data)
 
   if (error) {
     console.error(error)

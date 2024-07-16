@@ -155,7 +155,7 @@ export default function CarsTable() {
   if (isLoading) return <Spinner />
 
   return (
-    <div className="w-full py-14">
+    <div className="w-full">
       <div className="rounded-md border">
         <Table>
           <TableHeader>

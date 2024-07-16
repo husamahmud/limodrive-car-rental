@@ -22,6 +22,7 @@ import { getCarAPI } from '@/lib/car.api'
 import Spinner from '@/components/Spinner'
 import { useUpdateCar } from '@/app/hooks/useUpdateCar'
 import { toast } from '@/components/ui/use-toast'
+import { useCreateCar } from '@/app/hooks/useCreateCar'
 
 const formSchema = z.object({
   name: z.string(),
@@ -41,13 +42,18 @@ const formSchema = z.object({
   stars: z.string(),
 })
 
-export default function EditCarForm({ carId }: { carId: string }) {
+export default function EditCarForm({ carId }: { carId?: string }) {
   const { updateCar, isUpdating } = useUpdateCar()
+  const { createCar, isCreating } = useCreateCar()
+  const isEditingSession = Boolean(carId)
+  const isWorking = isUpdating || isCreating
+
   const { data, isLoading } = useQuery({
     queryKey: ['car', carId],
-    queryFn: () => getCarAPI(carId),
+    queryFn: () => getCarAPI(carId!),
+    enabled: isEditingSession,
+    retry: false,
   })
-
 
   const car = data?.data
 
@@ -73,24 +79,56 @@ export default function EditCarForm({ carId }: { carId: string }) {
   })
 
   useEffect(() => {
-    if (data && car) form.reset({
-      ...car,
-      price: car.price.toString(),
-      seats: car.seats.toString(),
-      stars: car.stars.toString(),
-    })
-  }, [car, form])
+    if (car && isEditingSession) {
+      form.reset({
+        ...car,
+        price: car.price.toString() || '',
+        seats: car.seats.toString() || '',
+        stars: car.stars.toString() || '',
+      })
+    }
+  }, [car, isEditingSession, form])
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    updateCar({
+    console.log(values)
+
+    const carValues = {
       ...values,
-      id: +carId,
       price: +values.price,
       seats: +values.seats,
       stars: +values.stars,
-    })
+    }
 
-    toast({ title: 'Car updated successfully!' })
+    if (isEditingSession) {
+      updateCar({
+        ...carValues,
+        id: +carId!,
+      }, {
+        onSuccess: () => {
+          toast({ title: 'Car updated successfully' })
+        },
+        onError: (error) => {
+          toast({ title: 'Failed to update car' })
+          console.error(error)
+        },
+      })
+    } else {
+      console.log('createCar', carValues)
+      createCar({
+        ...carValues,
+        id: Math.floor(Math.random() * 1000),
+      }, {
+        onSuccess: () => {
+          toast({ title: 'Car created successfully' })
+          form.reset()
+        },
+        onError: (error) => {
+          toast({ title: 'Failed to create car', variant: 'destructive' })
+          console.error(error)
+        },
+      })
+
+    }
   }
 
   if (isLoading) return <Spinner />
@@ -326,9 +364,9 @@ export default function EditCarForm({ carId }: { carId: string }) {
             type="submit"
             variant="outline"
             className="border-brand hover:text-white hover:bg-brand"
-            disabled={isUpdating}
+            disabled={isWorking}
           >
-            Edit
+            {isEditingSession ? 'Update Car' : 'Create Car'}
           </Button>
         </div>
       </form>

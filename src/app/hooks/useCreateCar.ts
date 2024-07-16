@@ -11,5 +11,5 @@ export function useCreateCar() {
     },
   })
 
-  return { createCar: mutate, isLoading: isPending }
+  return { createCar: mutate, isCreating: isPending }
 }
