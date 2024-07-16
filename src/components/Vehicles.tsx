@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation'
 import CarItem from '@/components/CarItem'
 import CarsOperations from '@/components/CarsOperations'
 
-import { getCarsAPI } from '@/lib/data-service'
+import { getCarsAPI } from '@/lib/car.api'
 import { CarI } from '@/types/car.interface'
 import { useQuery } from '@tanstack/react-query'
 import Spinner from '@/components/Spinner'

@@ -1,6 +1,5 @@
 import { supabase } from '@/lib/supabase'
 import { CarI } from '@/types/car.interface'
-import { toast, useToast } from '@/components/ui/use-toast'
 
 export async function getCarsAPI() {
   const { data, error } = await supabase
@@ -32,7 +31,7 @@ export async function getCarAPI(id: string): Promise<{ data: CarI }> {
   return { data: car }
 }
 
-export async function addCarAPI(car: CarI) {
+export async function createCar(car: CarI) {
   const { data, error } = await supabase
     .from('cars')
     .insert(car)
@@ -43,6 +42,23 @@ export async function addCarAPI(car: CarI) {
   }
 
   return { data }
+}
+
+export async function updateCarAPI(car: Partial<CarI>) {
+  const { data, error } = await supabase
+    .from('cars')
+    .update(car)
+    .eq('id', car.id)
+    .select()
+
+  console.log('updateCarAPI', data)
+
+  if (error) {
+    console.error(error)
+    throw error
+  }
+
+  return data[0]
 }
 
 export async function deleteCarAPI(id: string) {

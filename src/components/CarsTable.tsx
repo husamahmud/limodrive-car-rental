@@ -30,7 +30,7 @@ import { CarI } from '@/types/car.interface'
 import { Modal } from '@/components/Modal'
 import EditCarForm from '@/components/EditCarForm'
 import { useQuery } from '@tanstack/react-query'
-import { deleteCarAPI, getCarsAPI } from '@/lib/data-service'
+import { deleteCarAPI, getCarsAPI } from '@/lib/car.api'
 import Spinner from '@/components/Spinner'
 import { toast } from '@/components/ui/use-toast'
 
@@ -109,7 +109,7 @@ export const columns: ColumnDef<CarI>[] = [
                 </Button>
               }
                      title={`Edit ${row.original.name}`}>
-                <EditCarForm car={row.original} />
+                <EditCarForm carId={String(row.original.id)} />
               </Modal>
             </DropdownMenuItem>
             <DropdownMenuItem className="p-0">

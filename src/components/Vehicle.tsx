@@ -9,10 +9,11 @@ import { BiCategoryAlt } from 'react-icons/bi'
 import { PiSeatbeltLight, PiSeatLight } from 'react-icons/pi'
 import { HiArrowUpRight } from 'react-icons/hi2'
 import { IoCarSportOutline } from 'react-icons/io5'
-import { getCarAPI } from '@/lib/data-service'
+import { getCarAPI } from '@/lib/car.api'
 import { Card, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Stars from '@/components/Stars'
+import { CarInfoI } from '@/types/car.interface'
 import Spinner from '@/components/Spinner'
 import { Modal } from '@/components/Modal'
 import ModalForm from '@/components/ModalForm'
@@ -49,15 +50,6 @@ const CAR_INFO = [
     icon: IoCarSportOutline,
   },
 ]
-
-interface carInfoType {
-  transmission: string
-  interior: string
-  type: string
-  seat: string
-  category: string
-  make: string
-}
 
 export default function Vehicle({ carId }: { carId: string }) {
   const { data, isPending, error } = useQuery({
@@ -102,7 +94,7 @@ export default function Vehicle({ carId }: { carId: string }) {
                 <CardHeader className="flex flex-row justify-between p-4 items-center">
                   <p className="flex flex-col">
                     <span className="font-semibold text-base">
-                      {car[info.type as keyof carInfoType]}
+                      {car[info.type as keyof CarInfoI]}
                     </span>
                     {info.label}
                   </p>
@@ -133,12 +125,12 @@ export default function Vehicle({ carId }: { carId: string }) {
           <Modal
             title={`Book ${car.name}`}
             modalOpen={
-              <Button className='w-full py-8 flex items-center gap-4 text-lg border border-brand shadow hover:text-white transition-all text-brand-dark font-semibold hover:bg-brand bg-transparent'>
-              Book now <HiArrowUpRight />
+              <Button className="w-full py-8 flex items-center gap-4 text-lg border border-brand shadow hover:text-white transition-all text-brand-dark font-semibold hover:bg-brand bg-transparent">
+                Book now <HiArrowUpRight />
               </Button>
             }
           >
-            <ModalForm />
+            <ModalForm carId={carId} />
           </Modal>
         </div>
       </div>

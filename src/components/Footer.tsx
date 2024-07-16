@@ -36,7 +36,7 @@ export default function Footer() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    toast({ title: 'You have successfully subscribed' })
+    toast({ title: 'You have successfully subscribed',  })
     setEmail('')
   }
 

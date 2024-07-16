@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
@@ -12,36 +13,87 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { Switch } from '@/components/ui/switch'
 import { Input } from '@/components/ui/input'
 import React from 'react'
-import { CarI } from '@/types/car.interface'
 import { Textarea } from '@/components/ui/textarea'
+import { useQuery } from '@tanstack/react-query'
+import { getCarAPI } from '@/lib/car.api'
+import Spinner from '@/components/Spinner'
+import { useUpdateCar } from '@/app/hooks/useUpdateCar'
+import { toast } from '@/components/ui/use-toast'
 
 const formSchema = z.object({
   name: z.string(),
   model: z.string(),
   price: z.string(),
-  type: z.string(),
-  stars: z.string(),
-  transmission: z.string(),
-  interior: z.string(),
-  seat: z.string(),
+  availability: z.boolean(),
   description: z.string(),
+  image: z.string(),
+  seat: z.string(),
+  seats: z.string(),
+  transmission: z.string(),
+  color: z.string(),
+  interior: z.string(),
+  category: z.string(),
+  type: z.string(),
+  make: z.string(),
+  stars: z.string(),
 })
 
-export default function EditCarForm({ car }: { car: Partial<CarI> }) {
+export default function EditCarForm({ carId }: { carId: string }) {
+  const { updateCar, isUpdating } = useUpdateCar()
+  const { data, isLoading } = useQuery({
+    queryKey: ['car', carId],
+    queryFn: () => getCarAPI(carId),
+  })
+
+
+  const car = data?.data
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ...car,
-      price: car.price?.toString(),
-      stars: car.stars?.toString(),
+      name: '',
+      model: '',
+      price: '',
+      availability: false,
+      description: '',
+      image: '',
+      seat: '',
+      seats: '',
+      transmission: '',
+      color: '',
+      interior: '',
+      category: '',
+      type: '',
+      make: '',
+      stars: '',
     },
   })
 
+  useEffect(() => {
+    if (data && car) form.reset({
+      ...car,
+      price: car.price.toString(),
+      seats: car.seats.toString(),
+      stars: car.stars.toString(),
+    })
+  }, [car, form])
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    updateCar({
+      ...values,
+      id: +carId,
+      price: +values.price,
+      seats: +values.seats,
+      stars: +values.stars,
+    })
+
+    toast({ title: 'Car updated successfully!' })
   }
+
+  if (isLoading) return <Spinner />
 
   return (
     <Form {...form}>
@@ -49,7 +101,22 @@ export default function EditCarForm({ car }: { car: Partial<CarI> }) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-6"
       >
-        <div className="grid grid-cols-2 gap-x-5">
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Car Image url</FormLabel>
+              <FormControl>
+                <Input onChange={field.onChange}
+                       value={field.value} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="grid grid-cols-3 gap-x-5">
           <FormField
             control={form.control}
             name="name"
@@ -57,9 +124,30 @@ export default function EditCarForm({ car }: { car: Partial<CarI> }) {
               <FormItem>
                 <FormLabel>Car name</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input onChange={field.onChange}
+                         value={field.value} />
                 </FormControl>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="availability"
+            render={({ field }) => (
+              <FormItem className="flex justify-between items-center">
+                <div className="space-y-0.5">
+                  <FormLabel className="text-base">
+                    Availability
+                  </FormLabel>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value || false}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
               </FormItem>
             )}
           />
@@ -71,7 +159,23 @@ export default function EditCarForm({ car }: { car: Partial<CarI> }) {
               <FormItem>
                 <FormLabel>Car Model</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input onChange={field.onChange}
+                         value={field.value} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Car Category</FormLabel>
+                <FormControl>
+                  <Input onChange={field.onChange}
+                         value={field.value} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -85,7 +189,8 @@ export default function EditCarForm({ car }: { car: Partial<CarI> }) {
               <FormItem>
                 <FormLabel>Price per hour</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input onChange={field.onChange}
+                         value={field.value} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -99,7 +204,8 @@ export default function EditCarForm({ car }: { car: Partial<CarI> }) {
               <FormItem>
                 <FormLabel>Car type</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input onChange={field.onChange}
+                         value={field.value} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -113,7 +219,8 @@ export default function EditCarForm({ car }: { car: Partial<CarI> }) {
               <FormItem>
                 <FormLabel>Stars</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input onChange={field.onChange}
+                         value={field.value} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -127,7 +234,8 @@ export default function EditCarForm({ car }: { car: Partial<CarI> }) {
               <FormItem>
                 <FormLabel>Transmission</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input onChange={field.onChange}
+                         value={field.value} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -141,7 +249,8 @@ export default function EditCarForm({ car }: { car: Partial<CarI> }) {
               <FormItem>
                 <FormLabel>Interior</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input onChange={field.onChange}
+                         value={field.value} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -153,9 +262,40 @@ export default function EditCarForm({ car }: { car: Partial<CarI> }) {
             name="seat"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Seat</FormLabel>
+                <FormLabel>Seat type</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input onChange={field.onChange}
+                         value={field.value} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="seats"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Seats Count</FormLabel>
+                <FormControl>
+                  <Input onChange={field.onChange}
+                         value={field.value} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="make"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Make</FormLabel>
+                <FormControl>
+                  <Input onChange={field.onChange}
+                         value={field.value} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -172,7 +312,8 @@ export default function EditCarForm({ car }: { car: Partial<CarI> }) {
                 <Textarea
                   placeholder="Tell us a little bit about yourself"
                   className="resize-none"
-                  {...field}
+                  value={field.value}
+                  onChange={field.onChange}
                 />
               </FormControl>
               <FormMessage />
@@ -185,6 +326,7 @@ export default function EditCarForm({ car }: { car: Partial<CarI> }) {
             type="submit"
             variant="outline"
             className="border-brand hover:text-white hover:bg-brand"
+            disabled={isUpdating}
           >
             Edit
           </Button>

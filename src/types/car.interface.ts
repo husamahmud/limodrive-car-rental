@@ -16,3 +16,12 @@ export interface CarI {
   make: string
   stars: number
 }
+
+export interface CarInfoI {
+  transmission: string
+  interior: string
+  type: string
+  seat: string
+  category: string
+  make: string
+}

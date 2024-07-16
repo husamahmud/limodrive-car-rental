@@ -24,6 +24,8 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import React from 'react'
+import { addBookingAPI } from '@/lib/booking.api'
+import { toast } from '@/components/ui/use-toast'
 
 const formSchema = z.object({
   fullname: z.string(),
@@ -33,13 +35,14 @@ const formSchema = z.object({
   message: z.string(),
 })
 
-export default function ModalForm() {
+export default function ModalForm({ carId }: { carId: string }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    addBookingAPI({ ...values, carId: +carId })
+    toast({ title: 'Booking request sent', type: 'background' })
   }
 
   return (
