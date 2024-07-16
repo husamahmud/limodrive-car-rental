@@ -25,7 +25,7 @@ export default function Vehicles() {
     const makeFilter = searchParams.get('make') || 'all'
     const colorFilter = searchParams.get('color') || 'all'
 
-    const newFilteredCars = cars.filter(car =>
+    const newFilteredCars = cars?.filter(car =>
       (typeFilter === 'all' || car.type === typeFilter) &&
       (makeFilter === 'all' || car.make === makeFilter) &&
       (colorFilter === 'all' || car.color === colorFilter),
@@ -44,17 +44,15 @@ export default function Vehicles() {
         <CarsOperations />
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
-        {isLoading ? (
-          <Spinner />
-        ) : error ? (
-          <Spinner />
-        ) : filteredCars.length === 0 ? (
+      {isLoading && <Spinner />}
+      {error && <span>There is no cars at the momment</span>}
+      <div className="grid grid-cols-4 items-center gap-4">
+        {filteredCars?.length === 0 ? (
           <div className="col-span-full text-center">
             <p className="text-gray-700">No cars found</p>
           </div>
         ) : (
-          filteredCars.map((car) => (
+          filteredCars?.map((car) => (
             <CarItem
               {...car}
               key={car.id}

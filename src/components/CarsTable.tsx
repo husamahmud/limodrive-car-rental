@@ -26,13 +26,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-
-import { CARS } from '@/data/cars'
 import { CarI } from '@/types/car.interface'
 import { Modal } from '@/components/Modal'
 import EditCarForm from '@/components/EditCarForm'
-
-const data: CarI[] = CARS
+import { useQuery } from '@tanstack/react-query'
+import { getCarsAPI } from '@/lib/data-service'
+import Spinner from '@/components/Spinner'
 
 export const columns: ColumnDef<CarI>[] = [
   {
@@ -128,11 +127,17 @@ export const columns: ColumnDef<CarI>[] = [
 ]
 
 export default function CarsTable() {
+  const { data, isPending: isLoading } = useQuery({
+    queryKey: ['cars'],
+    queryFn: getCarsAPI,
+  })
+  const cars = data?.data as CarI[]
+
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable({
-    data,
+    data: cars ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -144,6 +149,8 @@ export default function CarsTable() {
       rowSelection,
     },
   })
+
+  if (isLoading) return <Spinner />
 
   return (
     <div className="w-full py-14">

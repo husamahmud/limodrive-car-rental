@@ -12,7 +12,6 @@ export async function getCarsAPI() {
   }
 
   const cars = data as CarI[]
-
   return { data: cars }
 }
 
@@ -29,7 +28,6 @@ export async function getCarAPI(id: string): Promise<{ data: CarI }> {
   }
 
   const car = data as CarI
-
   return { data: car }
 }
 
@@ -44,4 +42,18 @@ export async function addCarAPI(car: CarI) {
   }
 
   return { data }
+}
+
+export async function deleteCarAPI(id: string) {
+  const { error } = await supabase
+    .from('cars')
+    .delete()
+    .eq('id', id)
+
+  if (error) {
+    console.error(error)
+    throw error
+  }
+
+  return { data: id }
 }
