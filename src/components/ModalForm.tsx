@@ -41,7 +41,11 @@ export default function ModalForm({ carId }: { carId: string }) {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    addBookingAPI({ ...values, carId: +carId })
+    addBookingAPI({
+      ...values,
+      carId: +carId,
+      date: values.date.toISOString(),
+    })
     toast({ title: 'Booking request sent', type: 'background' })
   }
 
