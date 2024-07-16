@@ -18,7 +18,7 @@
 
 ## Database Schema
 
-![img_2.png](img_2.png)
+![img_2.png](assets/img_2.png)
 
 ## Setup
 
