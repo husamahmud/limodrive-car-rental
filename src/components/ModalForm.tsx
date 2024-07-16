@@ -130,7 +130,7 @@ export default function ModalForm() {
             <FormItem>
               <FormControl>
                 <Textarea
-                  placeholder="Tell us a little bit about yourself"
+                  placeholder="Please provide any additional details about your booking request"
                   className="resize-none"
                   {...field}
                 />

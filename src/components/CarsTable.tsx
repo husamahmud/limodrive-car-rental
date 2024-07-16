@@ -30,8 +30,9 @@ import { CarI } from '@/types/car.interface'
 import { Modal } from '@/components/Modal'
 import EditCarForm from '@/components/EditCarForm'
 import { useQuery } from '@tanstack/react-query'
-import { getCarsAPI } from '@/lib/data-service'
+import { deleteCarAPI, getCarsAPI } from '@/lib/data-service'
 import Spinner from '@/components/Spinner'
+import { toast } from '@/components/ui/use-toast'
 
 export const columns: ColumnDef<CarI>[] = [
   {
@@ -82,7 +83,8 @@ export const columns: ColumnDef<CarI>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const handleDelete = (id: number) => {
-        console.log('Delete car with id:', id)
+        deleteCarAPI(String(id))
+        toast({ title: 'Car deleted deleted successfully' })
       }
 
       return (
