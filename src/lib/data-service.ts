@@ -11,7 +11,9 @@ export async function getCarsAPI() {
     throw error
   }
 
-  return { data }
+  const cars = data as CarI[]
+
+  return { data: cars }
 }
 
 export async function getCarAPI(id: string): Promise<{ data: CarI }> {

@@ -8,32 +8,17 @@ import CarsOperations from '@/components/CarsOperations'
 
 import { getCarsAPI } from '@/lib/data-service'
 import { CarI } from '@/types/car.interface'
-
+import { useQuery } from '@tanstack/react-query'
+import Spinner from '@/components/Spinner'
 
 export default function Vehicles() {
+  const { data, isPending: isLoading, error } = useQuery({
+    queryKey: ['cars'],
+    queryFn: getCarsAPI,
+  })
+  const cars = data?.data as CarI[]
   const searchParams = useSearchParams()
-  const [cars, setCars] = useState<CarI[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [filteredCars, setFilteredCars] = useState<CarI[]>([])
-
-  useEffect(() => {
-    async function fetchCars() {
-      setLoading(true)
-      setError(null)
-
-      try {
-        const { data } = await getCarsAPI()
-        setCars(data)
-      } catch (error: any) {
-        setError(error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchCars()
-  }, [])
 
   useEffect(() => {
     const typeFilter = searchParams.get('type') || 'all'
@@ -60,14 +45,10 @@ export default function Vehicles() {
       </div>
 
       <div className="grid grid-cols-4 gap-4">
-        {loading ? (
-          <div className="col-span-full text-center">
-            <p className="text-gray-700">Loading cars...</p>
-          </div>
+        {isLoading ? (
+          <Spinner />
         ) : error ? (
-          <div className="col-span-full text-center">
-            <p className="text-red-500">{error}</p>
-          </div>
+          <Spinner />
         ) : filteredCars.length === 0 ? (
           <div className="col-span-full text-center">
             <p className="text-gray-700">No cars found</p>
