@@ -172,6 +172,21 @@ export default function EditCarForm({ carId }: { carId?: string }) {
 
           <FormField
             control={form.control}
+            name="model"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Car Model</FormLabel>
+                <FormControl>
+                  <Input onChange={field.onChange}
+                         value={field.value} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="availability"
             render={({ field }) => (
               <FormItem className="flex justify-between items-center">
@@ -186,21 +201,6 @@ export default function EditCarForm({ carId }: { carId?: string }) {
                     onCheckedChange={field.onChange}
                   />
                 </FormControl>
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="model"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Car Model</FormLabel>
-                <FormControl>
-                  <Input onChange={field.onChange}
-                         value={field.value} />
-                </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
