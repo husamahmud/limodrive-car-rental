@@ -2,7 +2,7 @@ import Filter from '@/components/Filter'
 
 export default function CarsOperations() {
   return (
-    <div className="flex gap-4">
+    <div className="flex md:gap-4 flex-col gap-2 md:flex-row">
       <Filter
         placeholder="Vehicle type"
         filterField="type"

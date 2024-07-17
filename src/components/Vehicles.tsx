@@ -36,7 +36,7 @@ export default function Vehicles() {
 
   return (
     <div className="container py-12 space-y-14">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-col md:flex-row">
         <h1 className="text-2xl font-serif font-medium tracking-widest">
           Browse our lexury vehicles
         </h1>
@@ -46,7 +46,7 @@ export default function Vehicles() {
 
       {isLoading && <Spinner />}
       {error && <span>There is no cars at the momment</span>}
-      <div className="grid grid-cols-4 items-center gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center gap-4">
         {filteredCars?.length === 0 ? (
           <div className="col-span-full text-center">
             <p className="text-gray-700">No cars found</p>

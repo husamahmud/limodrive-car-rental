@@ -65,7 +65,7 @@ export default function Vehicle({ carId }: { carId: string }) {
 
   return (
     <div className="py-20 container">
-      <div className="flex gap-8 px-10">
+      <div className="flex gap-8 px-10 flex-col-reverse md:flex-row">
         <div className="flex-1 flex flex-col justify-evenly items-center">
           <Image
             width={500}
@@ -81,11 +81,11 @@ export default function Vehicle({ carId }: { carId: string }) {
         </div>
 
         <div className="flex-1 space-y-5">
-          <h1 className="text-4xl font-serif font-medium">{car.name}</h1>
+          <h1 className="text-2xl md:text-4xl font-serif font-medium">{car.name}</h1>
           <Stars number={car.stars}
                  className="flex" />
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {CAR_INFO.map((info) => (
               <Card
                 key={info.type}
@@ -110,13 +110,13 @@ export default function Vehicle({ carId }: { carId: string }) {
             ))}
           </div>
 
-          <div className="flex justify-evenly">
+          <div className="flex justify-evenly flex-col sm:flex-row">
             <p className="flex justify-center text-lg items-center gap-1">
-              <span className="text-4xl font-semibold">${car.price}</span> / per
+              <span className="text-3xl md:text-4xl font-semibold">${car.price}</span> / per
               hour
             </p>
             <p className="flex justify-center text-lg items-center gap-1">
-              <span className="text-4xl font-semibold">${car.price * 20}</span> /
+              <span className="text-3xl md:text-4xl font-semibold">${car.price * 20}</span> /
               per
               day
             </p>
