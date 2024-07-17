@@ -36,14 +36,14 @@ export default function Footer() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    toast({ title: 'You have successfully subscribed',  })
+    toast({ title: 'You have successfully subscribed' })
     setEmail('')
   }
 
   return (
     <footer className="bg-brand-dark divide-y divide-stone-700"
             onSubmit={handleSubmit}>
-      <div className="container flex justify-between text-white py-14">
+      <div className="container flex text-white py-14 flex-col items-center md:justify-between justify-center space-y-4 md:flex-row">
         <a href="tel:+15249205320"
            className="flex items-center gap-5">
           <HiOutlinePhoneArrowUpRight
@@ -90,8 +90,8 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="container flex justify-between gap-32 text-white py-14">
-        <div className="space-y-10 flex-1">
+      <div className="container flex text-white py-14 flex-col gap-10 justify-center items-center text-center md:flex-row md:text-left">
+        <div className="space-y-10 flex-1 flex flex-col justify-center items-center md:block">
           <Logo color="light" />
           <p className="font-extralight text-sm">
             We offer a luxurious and stylish transportation option for various
@@ -141,22 +141,30 @@ export default function Footer() {
             90001, US
           </p>
 
-          <div className="flex gap-4">
+          <div className="flex gap-4 justify-center">
             <a href="/">
-              <FaFacebook size={20}
-                          className="hover:text-brand transition-colors" />
+              <FaFacebook
+                size={20}
+                className="hover:text-brand transition-colors"
+              />
             </a>
             <a href="/">
-              <FaInstagram size={20}
-                           className="hover:text-brand transition-colors" />
+              <FaInstagram
+                size={20}
+                className="hover:text-brand transition-colors"
+              />
             </a>
             <a href="/">
-              <FaTwitter size={20}
-                         className="hover:text-brand transition-colors" />
+              <FaTwitter
+                size={20}
+                className="hover:text-brand transition-colors"
+              />
             </a>
             <a href="/">
-              <FaLinkedinIn size={20}
-                            className="hover:text-brand transition-colors" />
+              <FaLinkedinIn
+                size={20}
+                className="hover:text-brand transition-colors"
+              />
             </a>
           </div>
         </div>

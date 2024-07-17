@@ -4,8 +4,8 @@ import CallUs from '@/components/CallUs'
 
 const Header = () => {
   return (
-    <header className="py-5 border-b-2 border-stone-300">
-      <div className="container flex justify-center items-center gap-10">
+    <header className="py-2 md:py-5 border-b-2 border-stone-300">
+      <div className="container flex flex-row-reverse md:flex-row justify-center items-center gap-10">
         <MainNav />
         <Logo />
         <CallUs />

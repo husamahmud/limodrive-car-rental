@@ -25,6 +25,9 @@ const config = {
       },
       backgroundImage: {
         'vehicles-banner': 'url("/vehicle_banner.png")',
+        'hero-banner': 'url("/landing_hero_bg.png")',
+        'about-banner': 'url("/about_us_bg.png")',
+        'video-banner': 'url("/explore-limo-1536x525.png")',
       },
       keyframes: {
         'accordion-down': {
